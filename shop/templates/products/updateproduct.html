@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% include '_messages.html' %}
+<div class="container">
+    <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h2 class="text-center">Modificar Producto</h2>
+        {% from "_formhelpers.html" import render_field %}
+            <form action="" method="POST" enctype="multipart/form-data">
+                {{ render_field(form.name, class="form-control", placeholder="Introduzca nombre del producto")}}
+                {{ render_field(form.price, class="form-control", placeholder="Introduzca precio del producto")}}
+                {{ render_field(form.discount, class="form-control", placeholder="Introduzca un descuento (opcional)")}}
+                {{ render_field(form.stock, class="form-control", placeholder="Introduzca cantidad del producto")}}
+
+                <label for="brand"> Añada una marca</label>
+                <select name="brand" id="brand" class="form-control" required>
+                    <option value="{{product.brand_id}}">{{product.brand.name}}</option>
+                    {% for brand in brands %}
+                        <option value="{{brand.id}}"> {{brand.name}}</option>
+                    {% endfor %}
+
+                </select>
+
+                <label for="category"> Añada una categoria</label>
+                <select name="category" id="category" class="form-control" required>
+                    <option value="{{product.category_id}}">{{product.category.name}}</option>
+                    {% for category in categories %}
+                        <option value="{{category.id}}"> {{category.name}}</option>
+                    {% endfor %}
+
+                </select>
+
+                {{ render_field(form.colors, class="form-control", placeholder="Introduzca los colores disponibles")}}
+                {{ render_field(form.description, class="form-control", placeholder="Descripcion del producto", rows="10")}}
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4"><input type="file" name="image_1" class="form-control"></div>
+                    <div class="col-md-4"><input type="file" name="image_1" class="form-control"></div>
+                    <div class="col-md-4"><input type="file" name="image_1" class="form-control"></div>
+                </div>
+            </div>
+
+                <button type="submit" class="btn btn-outline-info mt-4">Actualizar Producto</button>
+
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+{% endblock content %}
