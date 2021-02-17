@@ -38,12 +38,13 @@ def updatebrand(id):
 @app.route('/deletebrand/<int:id>', methods=['POST'])
 def deletebrand(id):
     brand = Brand.query.get_or_404(id)
-    if request.method == "POST":
-        db.session.delete(brand)
-        db.session.commit()
-        flash(f'La marca ha sido eliminada de la base de datos', 'success')
-        return redirect(url_for('admin'))
-    else:
+    try:
+        if request.method == "POST":
+            db.session.delete(brand)
+            db.session.commit()
+            flash(f'La marca ha sido eliminada de la base de datos', 'success')
+            return redirect(url_for('brands'))
+    except:
         flash(f'La marca no ha podido ser eliminada', 'danger')
         return redirect(url_for('admin'))
 
@@ -75,6 +76,19 @@ def updatecat(id):
         db.session.commit()
         return redirect(url_for('category'))
     return render_template('products/updatebrand.html', title='Update category', updatecat=updatecat)
+
+@app.route('/deletecat/<int:id>', methods=['POST'])
+def deletecat(id):
+    category = Category.query.get_or_404(id)
+    try:
+        if request.method == "POST":
+            db.session.delete(category)
+            db.session.commit()
+            flash(f'La marca ha sido eliminada de la base de datos', 'success')
+            return redirect(url_for('category'))
+    except:
+        flash(f'La marca no ha podido ser eliminada', 'danger')
+        return redirect(url_for('admin'))
 
 
 @app.route('/addproduct', methods=['GET', 'POST'])

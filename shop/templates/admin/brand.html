@@ -53,9 +53,9 @@
 <table class="table table-sm table-condensed table-hover">
      <thead><tr>
          <th>Sr</th>
-         <th>Name</th>
-         <th>Edit</th>
-         <th>Delete</th>
+         <th>Nombre</th>
+         <th>Editar</th>
+         <th>Eliminar</th>
          </tr>
      </thead>
              <tbody>
@@ -66,9 +66,11 @@
                  <td>{{brand.name}}</td>
                  <td> <a href="{{url_for('updatebrand', id=brand.id)}}" class="btn btn-sm btn-outline-info">
                      Editar</a></td>
-                 <td><a type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                         data-target="#ExampleModal-{{brand.id}}">Eliminar</a></td>
+                 <td><form action="{{url_for('deletebrand', id=brand.id)}}" method="POST">
+                     <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                 </form></td>
              </tr>
+
 
                 {% endfor %}
                 {% else %}
@@ -78,7 +80,9 @@
                  <td>{{loop.index}}</td>
                  <td>{{category.name}}</td>
                  <td> <a href="{{url_for('updatecat', id=category.id)}}" class="btn btn-sm btn-outline-info">Edit</a></td>
-                 <td> <a href="" class="btn btn-sm btn-outline-danger">Delete</a></td>
+                 <td><form action="{{url_for('deletecat', id=category.id)}}" method="POST">
+                     <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                 </form></td>
              </tr>
                 {% endfor %}
                 {% endif %}
