@@ -1,5 +1,4 @@
 from flask import render_template, session, request, redirect, url_for, flash
-
 from shop import app, db, bcrypt
 from .forms import RegistrationForm, LoginForm
 from .models import User
@@ -16,21 +15,84 @@ def admin():
     return render_template('admin/index.html', title='Admin page', products=products)
 
 
-@app.route('/brands')
+@app.route('/brands', methods=['GET', 'POST'])  # Administrador.
 def brands():
     if 'email' not in session:
         flash(f'Inicie sesion antes, por favor', 'danger')
         return redirect(url_for('login'))
-    brands = Brand.query.order_by(Brand.id.desc()).all()
-    return render_template('admin/brand.html', title="Brand page", brands=brands)
 
-@app.route('/category')
-def category():
+    if request.method == "POST":
+        getbrand = request.form.get('brand')
+        brand = Brand(name=getbrand)
+        db.session.add(brand)
+        flash(f'The Brand {getbrand} was added to your database', 'success')
+        db.session.commit()
+        return redirect(url_for('brands'))
+
+    elif request.method == 'GET':
+        brands = Brand.query.order_by(Brand.id.desc()).all()
+        return render_template('admin/brand.html', title="Brand page", brands=brands)
+
+
+@app.route('/brands/<int:id>', methods=['PUT', 'DELETE'])
+def brand(id):
+    brand = Brand.query.get_or_404(id)
+
     if 'email' not in session:
         flash(f'Inicie sesion antes, por favor', 'danger')
         return redirect(url_for('login'))
-    categories = Category.query.order_by(Category.id.desc()).all()
-    return render_template('admin/brand.html', title="Brand page", categories=categories)
+
+    elif request.method == "PUT":
+        updatebrand = request.form.get('brand')
+        brand.name = updatebrand
+        flash(f'La marca ha sido actualizada', 'success')
+
+    elif request.method == "DELETE":
+        db.session.delete(brand)
+        flash(f'La marca ha sido eliminada de la base de datos', 'success')
+
+    db.session.commit()
+    return redirect(url_for('brands'))
+
+
+@app.route('/category', methods=['GET', 'POST'])
+def categories():
+    if 'email' not in session:
+        flash(f'Inicie sesion antes, por favor', 'danger')
+        return redirect(url_for('login'))
+
+    if request.method == "POST":
+        getcategory = request.form.get('category')
+        category = Category(name=getcategory)
+        db.session.add(category)
+        flash(f'La categoria {getcategory} ha sido añadida a tu base de datos', 'success')
+        db.session.commit()
+        return redirect(url_for('categories'))
+
+    elif request.method == 'GET':
+        categories = Category.query.order_by(Category.id.desc()).all()
+        return render_template('admin/category.html', title="Category page", categories=categories)
+
+
+@app.route('/category/<int:id>', methods=['PUT', 'DELETE'])
+def category(id):
+    category = Category.query.get_or_404(id)
+
+    if 'email' not in session:
+        flash(f'Inicie sesion antes, por favor', 'danger')
+        return redirect(url_for('login'))
+
+    elif request.method == "PUT":
+        updatecategory = request.form.get('category')
+        category.name = updatecategory
+        flash(f'La marca ha sido actualizada', 'success')
+
+    elif request.method == "DELETE":
+        db.session.delete(category)
+        flash(f'La categoria ha sido eliminada de la base de datos', 'success')
+
+    db.session.commit()
+    return redirect(url_for('category'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -43,7 +105,7 @@ def register():
                     password=hash_password)
         db.session.add(user)
         db.session.commit()
-        flash(f'Welcome, {form.name.data}, Thanks for registering', 'success')
+        flash(f'Bienvenido, {form.name.data}, Gracias por registrarte', 'success')
         return redirect(url_for('login'))
     return render_template('admin/register.html', form=form, title="Register page")
 
@@ -55,7 +117,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             session['email'] = form.email.data
-            flash(f'Welcome {form.email.data} You are logged now', 'success')
+            flash(f'Bienvenido {form.email.data} has iniciado sesión correctamente', 'success')
             return redirect(request.args.get('next') or url_for('admin'))
         else:
             flash('Wrong password, please try again', 'danger')

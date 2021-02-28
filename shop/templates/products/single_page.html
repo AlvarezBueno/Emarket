@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% include '_messages.html' %}
+{% include '/products/userbar.html' %}
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6" id="pro_image"> <!-- imagen principal -->
+            <img src="{{url_for('static', filename='images/' + product.image_1)}}" alt="{{product.name}}"
+                 width="400px" height="400px">
+
+            <div class="row">
+                <div class="col-md-12 mt-5" id="spro_image"> <!-- imagenes de pie de foto -->
+                    <img src="{{url_for('static', filename='images/' + product.image_1)}}" alt="{{product.name}}"
+                         width="150px" height="150px" class="p-3">
+                    <img src="{{url_for('static', filename='images/' + product.image_2)}}" alt="{{product.name}}"
+                         width="150px" height="150px" class="p-3">
+                    <img src="{{url_for('static', filename='images/' + product.image_3)}}" alt="{{product.name}}"
+                         width="150px" height="150px" class="p-3">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <h1> {{product.name}}</h1>
+            <hr>
+            <p>{{product.price}}€</p>
+            {% if product.discount > 0 %}
+            <p>Descuento: {{product.discount}} %</p>
+            {% endif %}
+            <div class="col-md-4"> <!-- boton carrito -->
+                añadir boton para añadir al carrito.
+            </div>
+            <b>Descripcion:</b>
+            <p>{{product.description}}</p>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var pro_image = document.getElemntById('b_image');
+    var spro_image = document.getElemntById('b_image').getElementsByTagName('img');
+    for (var i = 0; i < s_image.length; i++) {
+        spro_image[i].addEventListener('click, full_image');
+    }
+
+    function full_image() {
+        var ImageSRC = this.getAttribute('src');
+        pro_image.innerHTML = "<img src=" + ImageSRC + "wisth='400' height='400'>"
+    }
+</script>
+
+
+
+{% endblock content %}
+
+

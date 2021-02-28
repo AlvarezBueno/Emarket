@@ -1,0 +1,26 @@
+<!-- Empaginado -->
+
+<div class="row mt-5">
+    <div class="col text-center">
+        {% if products.has_prev %} <!-- Si existe una pagina previa -->
+            <a href="{{request.path}}?page={{products.prev_num}}" class="btn btn-outline-dark">Anterior</a>
+        {% endif %}
+
+    {% for page_num in products.iter_pages() %} <!-- Itera sobre el numero de paginas -->
+        {% if page_num %}
+            {% if products.page == page_num %}
+            <a href="{{request.path}}?page={{page_num}}" class="btn btn-outline-dark">{{ page_num }}</a>
+            {% else %}
+            <a href="{{request.path}}?page={{page_num}}" class="btn btn-outline-dark">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+
+    {% if products.has_next %}
+        <a href="{{request.path}}?page={{products.next_num}}" class="btn btn-outline-dark">Siguiente</a>
+    {% endif %}
+    </div>
+</div>
+

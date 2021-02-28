@@ -5,48 +5,46 @@ from .forms import Addproducts
 import secrets  # reasigna nombres a los archivos subidos como fotos u otros.
 import os
 
-
-@app.route('/addbrand', methods=['GET', 'POST'])
-def addbrand():
-    if 'email' not in session:
-        flash(f'Inicie sesion antes, por favor', 'danger')
-        return redirect(url_for('login'))
-    if request.method == "POST":
-        getbrand = request.form.get('brand')
-        brand = Brand(name=getbrand)
-        db.session.add(brand)
-        flash(f'The Brand {getbrand} was added to your database', 'success')
-        db.session.commit()
-        return redirect(url_for('addbrand'))
-    return render_template('products/addbrand.html', brands='brands')
+ROWS_PER_PAGE = 4
 
 
-@app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
-def updatebrand(id):
-    if 'email' not in session:
-        flash(f'Inicie sesion antes, por favor', 'danger')
-    updatebrand = Brand.query.get_or_404(id)
-    brand = request.form.get('brand')
-    if request.method == "POST":
-        updatebrand.name = brand
-        flash(f'La marca ha sido actualizada', 'success')
-        db.session.commit()
-        return redirect(url_for('brands'))
-    return render_template('products/updatebrand.html', title='Update brand', updatebrand=updatebrand)
+@app.route('/')  # Mostrar productos a usuarios, pagina inicio
+def home():
+    page = request.args.get('page', 1, type=int)
+    products = Addproduct.query.filter(Addproduct.stock > 0).paginate(page=page, per_page=ROWS_PER_PAGE)
+    brands = Brand.query.all()
+    categories = Category.query.all()
+    return render_template('products/index.html', products=products, brands=brands, categories=categories)
 
 
-@app.route('/deletebrand/<int:id>', methods=['POST'])
-def deletebrand(id):
-    brand = Brand.query.get_or_404(id)
-    try:
-        if request.method == "POST":
-            db.session.delete(brand)
-            db.session.commit()
-            flash(f'La marca ha sido eliminada de la base de datos', 'success')
-            return redirect(url_for('brands'))
-    except:
-        flash(f'La marca no ha podido ser eliminada', 'danger')
-        return redirect(url_for('admin'))
+@app.route('/brands/<id>', methods=['GET'])
+def userBrand(id):
+    Brand.query.get_or_404(id)
+
+    page = request.args.get('page', 1, type=int)
+    products = Addproduct.query.filter_by(brand_id=id).paginate(page=page, per_page=ROWS_PER_PAGE)
+    brands = Brand.query.all()
+    categories = Category.query.all()
+    return render_template('products/index.html', brands=brands, categories=categories, products=products)
+
+
+@app.route('/category/<int:id>', methods=['GET'])
+def userCategory(id):
+    Category.query.get_or_404(id)
+
+    page = request.args.get('page', 1, type=int)
+    products = Addproduct.query.filter_by(category_id=id).paginate(page=page, per_page=ROWS_PER_PAGE)
+    brands = Brand.query.all()
+    categories = Category.query.all()
+    return render_template('products/index.html', brands=brands, categories=categories, products=products)
+
+
+@app.route('/product/<int:id>')
+def single_page(id):
+    product = Addproduct.query.get_or_404(id)
+    brands = Brand.query.all()
+    categories = Category.query.all()
+    return render_template('products/single_page.html', product=product, categories=categories, brands=brands)
 
 
 @app.route('/addcat', methods=['GET', 'POST'])
@@ -76,6 +74,7 @@ def updatecat(id):
         db.session.commit()
         return redirect(url_for('category'))
     return render_template('products/updatebrand.html', title='Update category', updatecat=updatecat)
+
 
 @app.route('/deletecat/<int:id>', methods=['POST'])
 def deletecat(id):
@@ -175,3 +174,24 @@ def updateproduct(id):
 
     return render_template("products/updateproduct.html", form=form, brands=brands, categories=categories,
                            product=product)
+
+
+@app.route('/deleteproduct/<int:id>', methods=['POST'])
+def deleteproduct(id):
+    product = Addproduct.query.get_or_404(id)
+    try:
+        if request.method == "POST":
+            try:
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + product.image_1))
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + product.image_2))
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + product.image_3))
+            except Exception as e:
+                print(e)
+
+            db.session.delete(product)
+            db.session.commit()
+            flash(f"El producto {product.name} ha sido eliminado", 'success')
+            return redirect(url_for('admin'))
+    except:
+        flash(f"No ha podido eliminarse el producto:{product.name} ", 'danger')
+        return redirect(url_for('admin'))
