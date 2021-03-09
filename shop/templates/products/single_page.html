@@ -34,10 +34,10 @@
                 <form action="{{url_for('AddCart')}}" method="POST">
                     <input type="hidden" name="product_id" value="{{product.id}}">
                     <button type="submit" class="btn btn-lrg btn-warning">Añadir al carrito</button>
-                    <label for=""> Quantity:</label>
+                    <label for=""> Cantidad:</label>
                     <input type="number" name="quantity" id="colors" value="1" min="1" max="{{product.stock}}">
                     {% set colors = product.colors.split(',') %}
-                    <label for="colors"> Colors:</label>
+                    <label for="colors"> Color:</label>
                         <select name="colors" id="">
                             {% for color in colors %}
                             {% set col = color.split(':') %}

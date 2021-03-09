@@ -16,6 +16,11 @@
      <thead><tr>
          <th>Sr</th>
          <th>Nombre</th>
+         <th>Telefono</th>
+         <th>Correo Electronico</th>
+         <th>Direccion</th>
+         <th>CIF</th>
+         <th>IVA</th>
          <th>Editar</th>
          <th>Eliminar</th>
          </tr>
@@ -23,8 +28,14 @@
              <tbody>
                 {% for brand in brands %}
              <tr>
-                 <td>{{loop.index}}</td>
-                 <td>{{brand.name}}</td>
+                <td>{{loop.index}}</td>
+                <td>{{brand.name}}</td>
+                <th>{{brand.phone}}</th>
+                <th>{{brand.email}}</th>
+                <th>{{brand.address}}</th>
+                <th>{{brand.CIF}}</th>
+                <th>{{brand.IVA}}</th>
+
                  <td>  <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updatebrandmodal">Editar Marca</button>
                  </td>

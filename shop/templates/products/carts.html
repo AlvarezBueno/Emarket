@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% include '_messages.html' %}
+{% include '/products/userbar.html' %}
+
+<div class="container">
+    <div class="row">
+        <table class="table table-sm">
+            <thead>
+                 <th>Sr</th>
+                 <th>Producto</th>
+                 <th>Precio</th>
+                 <th>Cantidad</th>
+                 <th>Subtotal</th>
+                 <th>Eliminar</th>
+            </thead>
+            <tbody>
+            {% for product in session['Shoppingcart'].items() %}
+                <tr>
+                    <th>{{loop.index}}</th>
+                    <th>{{product.name}}</th>
+                    <th>{{product.price}}</th>
+                    <th>{{product.quantity}}</th>>
+                    {% set subtotal = product.quantity|int * product.price|float %}
+                    <th>{{subtotal}}</th>
+                    <th>Eliminar</th>
+                </tr>
+            </tbody>
+
+    </div>
+</div>
+
+
+{% block content %}
+{% endblock content %}

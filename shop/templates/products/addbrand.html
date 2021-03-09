@@ -8,15 +8,27 @@
         <div class="col-md-6"></div>
         <div class="col-md-8">
             {% include '_messages.html' %}
-            <span class="text mt-2">Introduza el nombre de la marca: </span>
+
                 <form action="" method="POST" style="display: inline;">
+                    <span class="text mt-2">Introduza el nombre de la marca: </span>
                     <input type="text" name="brand" class="form-control">
+                </form>
+                <form action="" method="POST" enctype="multipart/form-data">
+                {{ render_field(form.phone, class="form-control", placeholder="Telefono de contacto")}}
+                {{ render_field(form.email, class="form-control", placeholder="Correo electronico")}}
+                {{ render_field(form.address, class="form-control", placeholder="Direccion")}}
+                {{ render_field(form.CIF, class="form-control", placeholder="Codigo de Identificacion Fiscal")}}
+                {{ render_field(form.IVA, class="form-control", placeholder="IVA Productos")}}
+                </form>
+
+            <form action="" method="POST" style="display: inline;">
                     <input type="submit" href="{{url_for('brands')}}" value="Añadir Marca" class="btn btn-info">
                     <a href="{{url_for('brands')}}" class="btn btn-warning mt-2"> Cancelar</a>
-                </form>
+            </form>
         </div>
         <div class="col-md-3"></div>
     </div>
 </div>
 
 {% endblock content %}
+

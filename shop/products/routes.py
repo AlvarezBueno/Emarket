@@ -1,5 +1,5 @@
 from flask import render_template, session, request, redirect, url_for, flash, current_app
-from shop import db, app, photos
+from shop import db, app, photos, search
 from .models import Brand, Category, Addproduct
 from .forms import Addproducts
 import secrets  # reasigna nombres a los archivos subidos como fotos u otros.
@@ -195,3 +195,10 @@ def deleteproduct(id):
     except:
         flash(f"No ha podido eliminarse el producto:{product.name} ", 'danger')
         return redirect(url_for('admin'))
+
+
+@app.route('/result')  # busqueda/search
+def result():
+    searchword = request.args.get('q')
+    products = Addproduct.query.msearch(searchword, fields=['name', 'desc'], limit=3)
+    return render_template('productos/result.html', products=products)

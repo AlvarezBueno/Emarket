@@ -19,3 +19,4 @@ class Addproducts(Form):
     image_1 = FileField('Imagen 1', validators=[FileAllowed(['jpg', 'png', 'gif', 'jpeg'])])
     image_2 = FileField('Imagen 2', validators=[FileAllowed(['jpg', 'png', 'gif', 'jpeg'])])
     image_3 = FileField('Imagen 3', validators=[FileAllowed(['jpg', 'png', 'gif', 'jpeg'])])
+

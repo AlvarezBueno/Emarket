@@ -4,6 +4,7 @@ from datetime import datetime
 
 
 class Addproduct(db.Model):  # Añadir producto y caracteristicas a la BBDD
+    __searchable__ = ['name', 'desc']
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
@@ -30,6 +31,11 @@ class Addproduct(db.Model):  # Añadir producto y caracteristicas a la BBDD
 class Brand(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
+    phone = db.Column(db.String, nullable=True, unique=True)
+    email = db.Column(db.String, nullable=True, unique=True)
+    address = db.Column(db.String, nullable=True, unique=True)
+    CIF = db.Column(db.String, nullable=True, unique=True)
+    IVA = db.Column(db.Integer, nullable=True, unique=False)
 
 
 class Category(db.Model):

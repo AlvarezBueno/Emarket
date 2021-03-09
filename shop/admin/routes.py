@@ -1,6 +1,6 @@
 from flask import render_template, session, request, redirect, url_for, flash
 from shop import app, db, bcrypt
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, Addbrands
 from .models import User
 from shop.products.models import Addproduct, Brand, Category
 import os
@@ -21,17 +21,23 @@ def brands():
         flash(f'Inicie sesion antes, por favor', 'danger')
         return redirect(url_for('login'))
 
+    form = Addbrands(request.form)
     if request.method == "POST":
+        phone = form.phone.data
+        email = form.email.data
+        address = form.address.data
+        CIF = form.CIF.data
+        IVA = form.IVA.data
         getbrand = request.form.get('brand')
-        brand = Brand(name=getbrand)
+        brand = Brand(name=getbrand, phone=phone, email=email, address=address, CIF=CIF, IVA=IVA)
         db.session.add(brand)
         flash(f'The Brand {getbrand} was added to your database', 'success')
         db.session.commit()
-        return redirect(url_for('brands'))
+        return redirect(url_for('brands', form=form))
 
     elif request.method == 'GET':
         brands = Brand.query.order_by(Brand.id.desc()).all()
-        return render_template('admin/brand.html', title="Brand page", brands=brands)
+        return render_template('admin/brand.html', title="Brand page", brands=brands, form=form)
 
 
 @app.route('/brands/<int:id>', methods=['PUT', 'DELETE'])
@@ -95,7 +101,7 @@ def category(id):
     return redirect(url_for('category'))
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])  # accesible solo por desarrollo
 def register():
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
