@@ -3,6 +3,7 @@
 {% include '_messages.html' %}
 {% include '/products/userbar.html' %}
 
+
 <div class="row">
     <div class="container">
         <div class="row">
@@ -24,7 +25,9 @@
                         {% else %}
                             <p class="text-center">{{product.price}}€</p>
                         {% endif%}
-
+                        {% if product.stock < 10 %}
+                            <b style="text-center; color: #FF0000"> ultimos  {{product.stock}} articulos </b>
+                        {% endif%}
 
                     </div>
                     <div class="card-footer">

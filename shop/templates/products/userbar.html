@@ -1,7 +1,8 @@
 <!-- userbar -->
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/">Inicio</a>
+      <!-- <a class="navbar-brand" href="/">Inicio</a> -->
+        <a href="/" class="navbar-left"><img src="/static/banner.png"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -9,30 +10,38 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item">
-              <a class="nav-link" href="/">Mostrar todo</a>
-            </li>
-            <li>  <!-- Button trigger modal -->
+            <li>  <!-- Button trigger modal MARCAS -->
                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#showbrandsmodal">Filtrar Marcas</button>
             </li>
-            <li>  <!-- Button trigger modal -->
+            <li>  <!-- Button trigger modal CATEGORIAS -->
                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#showcategoriesmodal">Filtrar Categorias</button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/customer/register">Registrarse</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/customer/login">Acceder</a>
-            </li>
 
-              <!-- Carrito de compra -->
+            <!-- Login y Logout -->
+            {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{{url_for('customer_logout')}}" class="nav-link">{{current_user.name}}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url_for('customer_logout')}}" class="nav-link">Cerrar sesion</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer/login">Acceder</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customer/register">Registrarse</a>
+                </li>
+            {% endif %}
+
+            <!-- Carrito de compra -->
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for('getCart')}}">Carrito ({{session['Shoppingcart']|length}})</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline my-2 my-lg-0" action="{{url_for('result')}}">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
       </div>
     </nav>
@@ -84,3 +93,22 @@
     </div>
   </div>
 </div>
+
+<!-- Barra inferior para marcas -->
+
+<nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Marcas y Fabricantes </a>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="/brand/login">Acceso Marcas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/brand/register">Registrar Marca</a>
+            </li>
+            <li class="right">
+                <a class="nav-link" href="/admin">Administrador</a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -101,7 +101,7 @@ def category(id):
     return redirect(url_for('category'))
 
 
-@app.route('/register', methods=['GET', 'POST'])  # accesible solo por desarrollo
+@app.route('/registeradmin', methods=['GET', 'POST'])  # accesible solo por cuestiones de desarrollo
 def register():
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():

@@ -200,5 +200,5 @@ def deleteproduct(id):
 @app.route('/result')  # busqueda/search
 def result():
     searchword = request.args.get('q')
-    products = Addproduct.query.msearch(searchword, fields=['name', 'desc'], limit=3)
-    return render_template('productos/result.html', products=products)
+    products = Addproduct.query.msearch(searchword, fields=['name', 'description'], limit=3)
+    return render_template('products/result.html', products=products)
