@@ -3,12 +3,11 @@ from wtforms import Form, IntegerField, StringField, BooleanField, TextAreaField
 from flask_wtf.file import FileAllowed, FileField, FileRequired
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileAllowed, FileField
-from .model import Register
+from .models import Marca
 
 
-class CustomerRegisterForm(Form):
-    name = StringField('Nombre: ')
-    username = StringField('Usuario: ', [validators.DataRequired()])
+class MarcaRegisterForm(Form):
+    name = StringField('Marca: ')
     email = StringField('Email: ', [validators.Email(), validators.DataRequired()])
     password = PasswordField('Contraseña: ', [validators.DataRequired(), validators.EqualTo('confirm',
                message="Ambas contraseñas deben coincidir")])
@@ -16,24 +15,26 @@ class CustomerRegisterForm(Form):
     country = StringField('Pais: ', [validators.DataRequired()])
     state = StringField('Region: ', [validators.DataRequired()])
     city = StringField('Ciudad: ', [validators.DataRequired()])
-    contact = StringField('Contact: ', [validators.DataRequired()])
+    contact = StringField('Telefono: ', [validators.DataRequired()])
     address = StringField('Direccion: ', [validators.DataRequired()])
     zipcode = StringField('codigo postal: ', [validators.DataRequired()])
+    CIF = StringField('CIF: ', [validators.DataRequired()])
+    IVA = StringField('IVA: ', [validators.DataRequired()])
 
-    submit = SubmitField('Registrar')
+    submit = SubmitField('Confirmar')
 
 
 def validate_username(self, username):
-    if Register.query.filter_by(username=username.data):
-        raise ValidationError("Usuario ya registrado")
+    if Marca.query.filter_by(username=username.data):
+        raise ValidationError("Fabricante ya registrado")
 
 
 def validate_email(self, email):
-    if Register.query.filter_by(email=email.data):
+    if Marca.query.filter_by(email=email.data):
         raise ValidationError("email ya registrado")
 
 
-class CustomerLoginForm(FlaskForm):
+class MarcaLoginForm(FlaskForm):
     email = StringField('Email: ', [validators.Email(), validators.DataRequired()])
     password = PasswordField('Password: ', [validators.DataRequired()])
     submit = SubmitField("Login")

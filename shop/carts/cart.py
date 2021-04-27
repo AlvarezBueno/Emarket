@@ -1,6 +1,10 @@
 from flask import redirect, render_template, url_for, flash, request, session, current_app
+from flask_wtf import form
 from shop import db, app
 from shop.products.models import Addproduct
+from shop.products.forms import Addproducts
+import sqlite3
+from datetime import datetime, date, time, timedelta
 
 
 def MagerDicts(dict1, dict2):
@@ -11,7 +15,33 @@ def MagerDicts(dict1, dict2):
     return False
 
 
-@app.route('/addcart', methods=['POST'])
+@app.route('/addcart/<int:id>')
+def AddCart(id):
+    print("haciendo cosas")
+    product = Addproduct.query.get_or_404(id)
+    form = Addproducts(request.form)
+    product.stock -= 1
+    product.sells += 1
+
+    db.session.commit()
+    flash(f"{product.name} comprado", 'success')
+
+    #return redirect(request.referrer)
+
+    #TABLA DE VENTAS
+    #Crear/Abrir documento.
+    conexion = sqlite3.connect("shop/db.db")
+    cursor = conexion.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS ventas (id INTEGER, product VARCHAN(100), quantity INTEGER, date INTEGER)")
+    venta = [(product.id, product.name, 1)]
+
+    cursor.executemany("INSERT INTO ventas VALUES (?,?,?, strftime('%Y %m %d', 'now') )", venta)
+    conexion.commit()
+    conexion.close()
+
+    return redirect(request.referrer)
+
+"""@app.route('/addcart', methods=['POST'])
 def AddCart():
     product_id = request.form.get('product_id')
     quantity = request.form.get('quantity')
@@ -35,7 +65,7 @@ def AddCart():
     print(session['Shoppingcart'])
 
     return redirect(request.referrer)
-
+"""
 
 """@app.route('/addcart', methods=['POST'])
 def AddCart():

@@ -5,7 +5,7 @@ from .forms import Addproducts
 import secrets  # reasigna nombres a los archivos subidos como fotos u otros.
 import os
 
-ROWS_PER_PAGE = 4
+ROWS_PER_PAGE = 6  # Fijado en 6 para comprobar su funcionamiento, podria fijarse al numero deseado.
 
 
 @app.route('/')  # Mostrar productos a usuarios, pagina inicio
@@ -162,7 +162,7 @@ def updateproduct(id):
                 product.image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10) + ".")
 
         db.session.commit()
-        flash(f"The product {product.name} has been updated", 'success')
+        flash(f"El producto {product.name} ha sido actualizado", 'success')
         return redirect("/admin")
 
     form.name.data = product.name
@@ -200,5 +200,7 @@ def deleteproduct(id):
 @app.route('/result')  # busqueda/search
 def result():
     searchword = request.args.get('q')
-    products = Addproduct.query.msearch(searchword, fields=['name', 'desc'], limit=3)
-    return render_template('productos/result.html', products=products)
+    products = Addproduct.query.msearch(searchword, fields=['name', 'description'], limit=3)
+    return render_template('products/result.html', products=products)
+
+

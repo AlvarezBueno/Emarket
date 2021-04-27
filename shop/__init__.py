@@ -32,3 +32,5 @@ from shop.admin import routes
 from shop.products import routes
 from shop.carts import cart
 from shop.customers import routes
+from shop.Marcas import routes
+from shop.graphs import routes

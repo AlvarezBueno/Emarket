@@ -10,6 +10,7 @@ class Addproduct(db.Model):  # Añadir producto y caracteristicas a la BBDD
     price = db.Column(db.Numeric(10, 2), nullable=False)
     discount = db.Column(db.Integer, default=0)
     stock = db.Column(db.Integer, nullable=False)
+    sells = db.Column(db.Integer, nullable=True)
     colors = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
     pub_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

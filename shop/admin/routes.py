@@ -3,6 +3,7 @@ from shop import app, db, bcrypt
 from .forms import RegistrationForm, LoginForm, Addbrands
 from .models import User
 from shop.products.models import Addproduct, Brand, Category
+from flask_login import login_required, current_user, logout_user, login_user
 import os
 
 
@@ -101,7 +102,7 @@ def category(id):
     return redirect(url_for('category'))
 
 
-@app.route('/register', methods=['GET', 'POST'])  # accesible solo por desarrollo
+@app.route('/registeradmin', methods=['GET', 'POST'])  # accesible solo por cuestiones de desarrollo
 def register():
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -129,3 +130,9 @@ def login():
             flash('Wrong password, please try again', 'danger')
 
     return render_template('admin/login.html', form=form, title='Login Page')
+
+
+@app.route('/admin/logout')
+def admin_logout():
+    logout_user()
+    return render_template('products/index.html')

@@ -3,14 +3,18 @@
 {% include '_messages.html' %}
 {% include '/products/userbar.html' %}
 
+{% include '/products/pagination.html' %}
+
 <div class="row">
     <div class="container">
         <div class="row">
             {% for product in products.items %}  <!-- .items es para la paginacion -->
             <div class="col-md-3">
-                <div class="card">
-                    <img src="{{url_for('static', filename='images/' + product.image_1)}}" alt="{{product.name}}"
+                <div class="card card text-center">
+                    <a href="{{url_for('single_page', id=product.id)}}">
+                        <img src="{{url_for('static', filename='images/' + product.image_1)}}"  alt="{{product.name}}"
                     class="card-img-top" style="height:200px; width:200px; margin:0 auto;">
+                    </a>
                     <div class="card-body">
                         {% if product.discount > 0 %}
                             <h1 style="text-shadow: 2px 2px 2px #000; color: #F00; transform: rotate(-15deg); position:absolute;
@@ -24,12 +28,14 @@
                         {% else %}
                             <p class="text-center">{{product.price}}€</p>
                         {% endif%}
-
+                        {% if product.stock < 10 %}
+                            <b style="text-center; color: #FF0000"> ultimos  {{product.stock}} articulos </b>
+                        {% endif%}
 
                     </div>
                     <div class="card-footer">
                         <a href="{{url_for('single_page', id=product.id)}}" class="float-left btn btn-sm btn-primary"> Detalles </a>
-                        <a href="{{url_for('AddCart')}}" class="float-right btn btn-sm btn-warning" > Añadir al carrito</a>
+                        <a href="{{url_for('AddCart', id=product.id)}}" class="float-right btn btn-sm btn-warning" > Añadir al carrito</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +45,9 @@
     </div>
 </div>
 
+
    {% include '/products/pagination.html' %}
+    <hr>
 
 
 {% endblock content %}

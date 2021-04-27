@@ -7,30 +7,40 @@
 <div class="container">
 <table class="table table-sm table-condensed">
          <thead><tr>
-         <th>Sr</th>
+         <th>ID</th>
          <th>Producto</th>
          <th>Precio</th>
          <th>Descuento</th>
          <th>Marca</th>
          <th>Categoria</th>
+         <th>Cantidad</th>
+         <th>Ventas</th>
          <th>Imagen</th>
          <th>Editar</th>
          <th>Eliminar</th>
+         <th>Fecha</th>
          </tr>
      </thead>
      <tbody>
      {% for product in products %}
      <tr>
-         <td>{{loop.index}}</td>
+         <td>{{product.id}}</td>
          <td>{{product.name}}</td>
          <td>{{product.price}}</td>
          <td>{{product.discount}} %</td>
          <td>{{product.brand.name}}</td>
          <td>{{product.category.name}}</td>
+         <td>{% if product.stock < 10 %}
+                <b style="text-center; color: #FF0000"> ultimos  {{product.stock}} articulos </b>
+             {% else %}
+                {{product.stock}}
+             {% endif%}</td>
+         <th>{{product.sells}}</th>
          <td><img src="{{url_for('static', filename='images/' + product.image_1) }}" width="60" height="60"></td>
          <td> <a href="{{url_for('updateproduct', id=product.id)}}" class="btn btn-sm btn-outline-info">Editar</a></td>
          <td> <form action="{{url_for('deleteproduct', id=product.id)}}" method="POST">
                                      <button type="submit" class="btn btn-danger btn-sm">Eliminar</button></form></td>
+         <th>{{product.pub_date.day}}-{{product.pub_date.month}}-{{product.pub_date.year}}</th>
      </tr>
 
         {% endfor %}
