@@ -6,6 +6,8 @@ from .models import Marca
 import secrets  # reasigna nombres a los archivos subidos como fotos u otros.
 import os
 
+# --NO FUNCIONAL. EN DESARROLLO. Problemas con la session.--
+
 
 @app.route('/marcas/register', methods=['GET', 'POST'])
 def brand_register():

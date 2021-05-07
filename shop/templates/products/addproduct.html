@@ -11,7 +11,8 @@
         {% from "_formhelpers.html" import render_field %}
             <form action="" method="POST" enctype="multipart/form-data">
                 {{ render_field(form.name, class="form-control", placeholder="Introduzca nombre del producto")}}
-                {{ render_field(form.price, class="form-control", placeholder="Introduzca precio del producto")}}
+                {{ render_field(form.price, class="form-control", placeholder="Precio de venta al publico")}}
+                {{ render_field(form.cost, class="form-control", placeholder="Coste de adquisicion mayorista")}}
                 {{ render_field(form.discount, class="form-control", placeholder="Introduzca un descuento (opcional)")}}
                 {{ render_field(form.stock, class="form-control", placeholder="Introduzca cantidad del producto")}}
 

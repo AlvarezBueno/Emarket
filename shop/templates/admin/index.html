@@ -5,46 +5,61 @@
 {% include '/admin/navbar.html' %}
 
 <div class="container">
-<table class="table table-sm table-condensed">
-         <thead><tr>
-         <th>ID</th>
-         <th>Producto</th>
-         <th>Precio</th>
-         <th>Descuento</th>
-         <th>Marca</th>
-         <th>Categoria</th>
-         <th>Cantidad</th>
-         <th>Ventas</th>
-         <th>Imagen</th>
-         <th>Editar</th>
-         <th>Eliminar</th>
-         <th>Fecha</th>
-         </tr>
-     </thead>
-     <tbody>
-     {% for product in products %}
-     <tr>
-         <td>{{product.id}}</td>
-         <td>{{product.name}}</td>
-         <td>{{product.price}}</td>
-         <td>{{product.discount}} %</td>
-         <td>{{product.brand.name}}</td>
-         <td>{{product.category.name}}</td>
-         <td>{% if product.stock < 10 %}
-                <b style="text-center; color: #FF0000"> ultimos  {{product.stock}} articulos </b>
-             {% else %}
+    <table class="table table-sm table-condensed">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Descuento</th>
+            <th>Marca</th>
+            <th>Categoria</th>
+            <th>Cantidad</th>
+            <th>Ventas</th>
+            <th>Imagen</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+            <th>Grafico ventas</th>
+            <th>Beneficio</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{product.id}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.discount}} %</td>
+            <td>{{product.brand.name}}</td>
+            <td>{{product.category.name}}</td>
+            <td>{% if product.stock < 10 %}
+                <b style="text-center; color: #FF0000"> ultimos {{product.stock}} articulos </b>
+                {% else %}
                 {{product.stock}}
-             {% endif%}</td>
-         <th>{{product.sells}}</th>
-         <td><img src="{{url_for('static', filename='images/' + product.image_1) }}" width="60" height="60"></td>
-         <td> <a href="{{url_for('updateproduct', id=product.id)}}" class="btn btn-sm btn-outline-info">Editar</a></td>
-         <td> <form action="{{url_for('deleteproduct', id=product.id)}}" method="POST">
-                                     <button type="submit" class="btn btn-danger btn-sm">Eliminar</button></form></td>
-         <th>{{product.pub_date.day}}-{{product.pub_date.month}}-{{product.pub_date.year}}</th>
-     </tr>
+                {% endif%}
+            </td>
+            <th>{{product.sells}}</th>
+            <td><img src="{{url_for('static', filename='images/' + product.image_1) }}" width="60" height="60"></td>
+            <td><a href="{{url_for('updateproduct', id=product.id)}}" class="btn btn-sm btn-outline-info">Editar</a>
+            </td>
+            <td>
+                <form action="{{url_for('deleteproduct', id=product.id)}}" method="POST">
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            </td>
+            <td><a href="{{url_for('graph', id=product.id)}}" class="float-left btn btn-sm btn-primary"> Ventas </a>
+            </td>
+            {% if product.discount > 0 %}
+            {% set disprice_sells = (product.price|float - (product.price|float * product.discount|int) / 100)*product.sells %}
+            <th class="text-right">{{disprice_sells|round(2)}}&nbsp;€</th>
+            {% else %}
+            {% set price_sells = (product.price* product.sells) %}
+            <th class="text-right">{{price_sells}}&nbsp;€</th>
+            {% endif%}
+        </tr>
 
         {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 {% endblock content %}

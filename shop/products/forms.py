@@ -10,11 +10,13 @@ from wtforms import Form, IntegerField, StringField, BooleanField, TextAreaField
 
 class Addproducts(Form):
     name = StringField('Nombre:', [validators.DataRequired()])
-    price = DecimalField('Precio:', [validators.DataRequired()])
+    price = DecimalField('Precio clientes:', [validators.DataRequired()])
+    cost = DecimalField('Coste:', [validators.DataRequired()])
     discount = IntegerField('Descuento:', default=0)
-    stock = IntegerField('Cantidad', [validators.DataRequired()])
+    sells = IntegerField()
+    stock = IntegerField('Cantidad:', [validators.DataRequired()])
     description = TextAreaField('Descripcion:', [validators.DataRequired()])
-    colors = TextAreaField('Colores', [validators.DataRequired()])
+    colors = TextAreaField('Colores:', [validators.DataRequired()])
 
     image_1 = FileField('Imagen 1', validators=[FileAllowed(['jpg', 'png', 'gif', 'jpeg'])])
     image_2 = FileField('Imagen 2', validators=[FileAllowed(['jpg', 'png', 'gif', 'jpeg'])])

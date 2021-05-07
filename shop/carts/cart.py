@@ -41,6 +41,7 @@ def AddCart(id):
 
     return redirect(request.referrer)
 
+
 """@app.route('/addcart', methods=['POST'])
 def AddCart():
     product_id = request.form.get('product_id')

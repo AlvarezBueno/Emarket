@@ -19,6 +19,7 @@ class LoginForm(Form):
 
 
 class Addbrands(Form):
+    name = StringField('Marca: ')
     phone = StringField('Telefono:', [validators.DataRequired()])
     email = StringField('Email', [validators.Length(min=6, max=35), validators.Email()])
     address = StringField('Direccion:', [validators.DataRequired()])

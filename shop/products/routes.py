@@ -101,6 +101,7 @@ def addproduct():
     if request.method == 'POST':
         name = form.name.data
         price = form.price.data
+        cost = form.cost.data
         discount = form.discount.data
         stock = form.stock.data
         colors = form.colors.data
@@ -110,7 +111,7 @@ def addproduct():
         image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10) + ".")
         image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10) + ".")
         image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10) + ".")
-        addpro = Addproduct(name=name, price=price, discount=discount, stock=stock, colors=colors,
+        addpro = Addproduct(name=name, price=price, cost=cost, discount=discount, stock=stock, colors=colors,
                             description=description, brand_id=brand, category_id=category, image_1=image_1,
                             image_2=image_2, image_3=image_3)
         db.session.add(addpro)
@@ -136,6 +137,7 @@ def updateproduct(id):
     if request.method == "POST":
         product.name = form.name.data
         product.price = form.price.data
+        product.cost = form.cost.data
         product.discount = form.discount.data
         product.brand_id = brand
         product.category_id = category

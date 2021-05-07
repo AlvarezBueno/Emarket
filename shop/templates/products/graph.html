@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% include '_messages.html' %}
+{% include '/products/userbar.html' %}
+
+
+<div class="container mt-5 mb-5">
+    <button onclick="goBack()" class="float-left btn btn-sm btn-primary center">Volver</button>
+    <img src="/plot.png/{{ product.id }}">
+</div>
+
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+{% endblock content %}
